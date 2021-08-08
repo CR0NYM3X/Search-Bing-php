@@ -43,7 +43,7 @@ $p->setArgv($argv);
 
 # php bingfind.php -w "site:gov.com" -exp "login.php|acceso.php" -d * -mnt 500 -cl
 # php bingfind.php -inf "/Data_bing/Dorks.txt" -outf "resultados.txt"  -exp "login.php|acceso.php" -d * -mnt 500 -cl 
-#   php bingfind.php -w comida -mnt 200 -fk -d 2 -outf info.txt -exp com -cl
+#   php bingfind.php -w gobierno -mnt 200  -d * -outf info.txt -exp "\.com|\.mx" -cl -fk
 
 
 echo "\n\n\n";
