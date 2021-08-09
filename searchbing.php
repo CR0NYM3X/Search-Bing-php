@@ -51,7 +51,7 @@ echo "\n\n\n";
 
 
 $cntLinks=15;
-$fecha=0;
+$fecha="*";
 $rutaDatalink = "Data_bing/Data.txt";
 $expLinks;
 
@@ -237,7 +237,7 @@ function consultBing($url,$cnt1,$idproces)
 
 	switch ($fecha) 
 	{
-		case 0:	#NO TIENEFECHA 
+		case "*":	#NO TIENEFECHA 
 			$fecha="";
 			break;
 		case 1: #FECHA DE 24 HORAS
