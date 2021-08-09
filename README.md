@@ -1,5 +1,10 @@
 # Search Bing
-Ejemplo  de ejecucion :    `  php searchbing.php -w gobierno -mnt 200  -d * -outf info.txt -exp "\.com|\.mx" -cl -fk`
+Ejemplo  de ejecucion :    `  php searchbing.php -w gobierno -mnt 200  -d * -outf info.txt -exp "\.com|\.mx" -cl -fk`<br><br>
+       ********** PARAMETRO OPCIONAL, LO PUEDES PONER O NO `[ -d ]`<br>
+        * = SE EXTRAERAN TODOS LINK ENCONTRADOS SIN FLITRO DE FECHA <br>
+				1 = SE EXTRAERAN LOS LINK QUE TENGAN UN TIEMPO DE 24 HORAS <br>
+				2 = SE EXTRAERAN LOS LINK QUE TENGAN UN TIEMPO DE SEMANADAS  <br>
+				3 = SE EXTRAERAN LOS LINK QUE TENGAN UN TIEMPO DE MESES<br>
 
 ![logo](img/banner1.PNG)
 ![test](img/procesos.png)
@@ -9,6 +14,7 @@ Ejemplo  de ejecucion :    `  php searchbing.php -w gobierno -mnt 200  -d * -out
 2.- Elimina Links repetidos<br>
 3.- Puedes filtrar los link con expresiones regulares<br>
 4.- Almacena los resultados en TXT<br>
+5.- Puedes hacer busquedas con fecha y extraer los links mas recientes
 
 ### Funciones y clases que utilizia
 
