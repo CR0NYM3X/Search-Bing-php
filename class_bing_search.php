@@ -249,26 +249,7 @@ class bing extends facilcurl
 
 $mm = new bing();
 
- $mm->eliminarDominio("google.com");
- $mm->eliminarDominio("www.google");
- $mm->eliminarDominio("youtube.com");
- $mm->eliminarDominio("wikipedia.org");
- $mm->eliminarDominio("facebook.org");
- $mm->eliminarDominio("facebook.com");
- $mm->eliminarDominio("fb.com");
- $mm->eliminarDominio("wikipedia.org");
- $mm->eliminarDominio("twitch.org");
- $mm->eliminarDominio("twitter.com");
- $mm->eliminarDominio("twitter.org");
- $mm->eliminarDominio("tiktok.com");
- $mm->eliminarDominio("instagram.com");
- $mm->eliminarDominio("netflix.com");
- $mm->eliminarDominio("wiktionary.org");
- $mm->eliminarDominio("yahoo.com");
-
-
-$pag= $mm->dork_bing(/* Palabra a buscar */"jose", /* Cantidad de links que queremos*/30);  
-
+$pag= $mm->dork_bing(/* Palabra a buscar */  "jose", /* Cantidad de links que queremos*/  30);  
 
 if($pag)
 {
