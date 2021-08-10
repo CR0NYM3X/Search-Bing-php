@@ -247,6 +247,12 @@ class bing extends facilcurl
 //$mm->proxyBing("127.0.0.1:8080");
 //$pag= $mm->dork_bing("jose",49,"mx");  
 
+
+
+
+
+/*
+
 $mm = new bing();
 
  $mm->eliminarDominio("google.com");
@@ -265,9 +271,11 @@ $mm = new bing();
  $mm->eliminarDominio("netflix.com");
  $mm->eliminarDominio("wiktionary.org");
  $mm->eliminarDominio("yahoo.com");
+*/
 
-$pag= $mm->dork_bing(/* Palabra a buscar */  "jose", /* Cantidad de links que queremos*/  100	, /* Espresion*/ "\.edu");  
+//$pag= $mm->dork_bing(/* Palabra a buscar */  "jose", /* Cantidad de links que queremos*/  100	, /* Espresion*/ "\.edu");  
 
+/*
 if($pag)
 {
 	print_r($pag[0]);
@@ -276,18 +284,6 @@ else
 {
 	echo "No se encontraron links\n";
 }
-
-
-
-
-/*
-
-
-
-
-
-
-
 
 */
 
