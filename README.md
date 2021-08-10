@@ -14,7 +14,8 @@ Ejemplo  de ejecucion :    `  php searchbing.php -w gobierno -mnt 200  -d * -out
 2.- Elimina Links repetidos<br>
 3.- Puedes filtrar los link con expresiones regulares<br>
 4.- Almacena los resultados en TXT<br>
-5.- Puedes hacer busquedas con fecha y extraer los links mas recientes
+5.- Puedes hacer busquedas con fecha y extraer los links mas recientes<br>
+6.- Futura actualizacion el uso de proxy
 
 ### Funciones y clases que utilizia
 
