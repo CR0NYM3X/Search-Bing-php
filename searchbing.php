@@ -34,8 +34,9 @@ $p->setParam(	'-w',		'--W',		'String',	'Poner palabra a buscar',/*Required*/ fal
 $p->setParam(	'-exp',		'--EXP',	'String',	'Aplicar Exprecion regular en cada link',/*Required*/ false,/*Item de Array*/	'url');
 $p->setParam(	'-d',		'--D',		'Int',	'Buscar por Fecha o se pone * para buscar todas las fechas',/*Required*/ false,/*Item de Array*/	'url');
 $p->setParam(	'-mnt',		'--MNT',	'Int',	'Cantidad de links que quieres',/*Required*/ false,/*Item de Array*/	'url');
-$p->setParam(	'-outf',		'--OUTFILE',	'File',	'Guardar link en archivo, por default usa los archivos {Data_bing}',/*Required*/ false,/*Item de Array*/	'url');
+$p->setParam(	'-outf',		'--OUTFILE',	'File',	'Guardar link en archivo, por default usa los archivos {Data_bing/Data.txt}',/*Required*/ false,/*Item de Array*/	'url');
 $p->setParam(	'-inf',		'--INFILE',	'File',	'Archivo para realizar busqueda masiva',/*Required*/ false,/*Item de Array*/	'url');
+$p->setParam(	'-proxy',		'--PROXY',	'IP:PORT',	'Conectate a un proxy',/*Required*/ false,/*Item de Array*/	'url');
 $p->setParam(	'-fk',		'--FK',	'Opcion',	'Controla los fork y da orden',/*Required*/ false,/*Item de Array*/	'url');
 $p->setParam(	'-cl',		'--CLEAR',	'Opcion',	'Limpia los Archivos y ingresa nuevos links {Data_bing}',/*Required*/ false,/*Item de Array*/	'url');
 $p->setArgv($argv);
@@ -54,6 +55,7 @@ $cntLinks=15;
 $fecha="*";
 $rutaDatalink = "Data_bing/Data.txt";
 $expLinks;
+$proxy;
 
 // VERIFICANDO QUE SE INGRESEN PARAMETROS IMPORTANTES
 if( count($argv) == 1){
@@ -92,6 +94,7 @@ if( ($argvEXP = array_search("-exp",$argv)) ){
 
 
 
+
 if( ($argvD = array_search("-d",$argv)) ){
 	if ( @is_numeric($argv[($argvD+1)]) ) {
 		$fecha=$argv[($argvD+1)];
@@ -118,7 +121,7 @@ if (  array_search("-cl",$argv) ) {
 	if( $argvEXP )
 	{
 		guardadData("","w","Data_bing/Data_not_Filter.txt");
-		echo $txtcl->txtcolor("\t (*) SE LIMPIO EL TXT QUE NO APLICARON CON LA EXPRESION \n",3,"blanco","morado")."\n";
+		echo $txtcl->txtcolor("\t (*) SE LIMPIO EL TXT QUE NO APLICARON CON LA EXPRESION",3,"blanco","morado")."\n";
 	}
 
 
@@ -130,6 +133,13 @@ if(array_search("-fk",$argv)){
 }else{
 	$orderFork=false; // esto hace que se habilite el wait y espera 1 el primer proceso que continue para que se ejecute el segundo asi sisesivamente
 }
+
+
+if( ($argvProxy = array_search("-proxy",$argv)) ){
+	$proxy = $argv[($argvProxy+1)];
+	echo $txtcl->txtcolor("\t (*) Conectar a Proxy : ".$proxy,3,"blanco","morado")."\n";
+}
+
 
 
 
@@ -162,11 +172,18 @@ function guardadData($data="",$permiso="w",$ruta="Data_bing/Data.txt") // permis
 
 function consultBing($url,$cnt1,$idproces)
 {
+	global $proxy;
 	$txtcl = new Color_texto();
 	$mm = new facilcurl();
+
+	if(!empty($proxy))
+	{	
+		$mm->proxy($proxy);
+	}
+
+	
+
 	$mm->curl($url);
-
-
 
 	// VERIFICA SI SE HIZO LA CONSULTA A LA PAGINA
 	if ($pag = $mm->exe_curl()) 

@@ -292,7 +292,7 @@ class facilcurl
 
 		curl_setopt($this->session, CURLOPT_PROXY, $ip); //El proxy HTTP para enviar peticiones a través de tunel. 	
 		if(isset($puerto)){curl_setopt($this->session, CURLOPT_PROXYPORT, $puerto);}// para asignar el puerto del proxy
-		curl_setopt($this->session, CURLOPT_HTTPPROXYTUNNEL, TRUE);//TRUE para usar un tunel a través de un proxy HTTP. 
+		//curl_setopt($this->session, CURLOPT_HTTPPROXYTUNNEL, TRUE);//TRUE para usar un tunel a través de un proxy HTTP. 
 		if(isset($usuario) and isset($password))
 		{
 			curl_setopt($this->session, CURLOPT_PROXYUSERPWD, "$usuario:$password");  //si el proxy nesesita contraseña
