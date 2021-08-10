@@ -10,8 +10,30 @@ require_once("class/class_curl/facilcurl.php");
 
 class bing extends facilcurl
 {
-	public $count1=0;
+	public $count=0;
 	private $codigo;
+	private $paginasComunes;
+
+
+
+
+	// Se agrega un proxy
+	function proxyBing($proxy)
+	{
+		$this->proxy($proxy); // metodo de la clase faculcurl
+	}
+
+
+
+	// Elimina dominios que no queremos que aparezcan
+	function eliminarDominio($dominio)
+	{
+		$this->paginasComunes .= "|".preg_replace("[\.]", "\.", $dominio);
+	}
+
+
+
+
 
 	function dork_bing($url,$cantidad=49,$exprecion=null,$fecha="")
 	{
@@ -20,6 +42,10 @@ class bing extends facilcurl
 		$link2=array();
 		
 
+
+
+
+		// Se especifica la fecha de lanzamiento
 		switch ($fecha) 
 		{
 			case 0:	#NO TIENEFECHA 
@@ -42,43 +68,36 @@ class bing extends facilcurl
 					3 = SE EXTRAERAN LOS LINK QUE TENGAN UN TIEMPO DE MESES   <br>");
 				
 		}
+	
+
+
 
 
 		
 		while (true) 
 		{
-			$l= "https://www.bing.com/search?q=".preg_replace("[\s+]", "+", $url)."&count=50&first=$pagina".$fecha;
 
 
-			$this->curl($l);
-
+			$this->curl("https://www.bing.com/search?q=".preg_replace("[\s+]", "+", $url)."&count=50&first=$pagina".$fecha,null,0,null,1);
 			
 
 
 			if(($this->codigo= $this->exe_curl()))
 			{
 
+
 				$link2=$this->url_bing();
 				
-
-/*
-				print_r($link2);
-				$archivo = fopen("paginalllllllllllllllll.html","w+b");
-				fwrite($archivo,$this->codigo );
-				fclose($archivo);
-				die("se acabo".$l);
-				*/
-
-				if((array_diff($link2, $link))==true)
+				
+				if((array_diff($link2, $link))==true) // compara los array y si son iguales se detiene porque se acabaron las paginas
 				{
 
 					$link=array_merge($link,$link2);
-					#$link= preg_grep("#.r.bat.bing.com#", array_merge($link,$link2),PREG_GREP_INVERT);# quitaba publicidad ya no sirve esta funcion .r.bat.bing.com
+					#$link= preg_grep("#.r.bat.bing.com#", array_merge($link,$link2),PREG_GREP_INVERT);# esta linea quitaba publicidad ya no sirve esta funcion .r.bat.bing.com
 
-					
-					//echo "1----".count($link)."\n";
+
 					$link = array_unique($link,SORT_STRING); #QUITANDO LINK REPETIDOS  "PROBLEMA CUANDO EL ARRAY TIENE MAS DE 600 ELEMENTOS"
-					//echo "-------".count($link)."\n";
+
 
 					if(count($link)>=$cantidad)
 					{
@@ -95,6 +114,7 @@ class bing extends facilcurl
 				{
 					break;
 				}
+
 			}
 			else
 			{
@@ -105,8 +125,9 @@ class bing extends facilcurl
 
 		}
 
+
 		if($exprecion)
-		{  #por si quieres que el link cumpla con una expresion
+		{  
 
 			if(($link2=preg_grep("#$exprecion#i", $link)))  #PREG_GREP_INVERT
 			{
@@ -122,13 +143,24 @@ class bing extends facilcurl
 
 				//return array(0 => array("NO SE ENCONTRARON LINK CON LA EXPRECION =  $exprecion"),1=> 0, 2=> 0, 3=>0 ,4=> 0);
 
-				return array(0 => array("NO SE ENCONTRARON LINK CON LA EXPRECION"),1=> 0, 2=> 0, 3=>0 ,4=> 0);
+				return array(0 => ["NO SE ENCONTRARON LINK CON LA EXPRECION"],
+							 1 => 0,
+							 2 => $link, #link que no cumplen con la exprecion
+							 3 => 0,
+							 4 => 0);
 			}
 		}
 		else
 		{
-			$link=array_unique($link,SORT_STRING); //eliminamos los repetidos desde aqui
-			return array(0 => $link, 1 => count($link),2=> 0, 3=> 0, 4=>0 ,5=> 0);
+
+
+			//$link=array_unique($link,SORT_STRING); //eliminamos los repetidos desde aqui
+			return array(0 => array_values($link),
+						 1 => count($link),
+						 2=> 0,
+						 3=> 0,
+						 4=> 0,
+						 5=> 0);
 		}
 
 	}
@@ -136,45 +168,61 @@ class bing extends facilcurl
 
 
 
-
+	# este metodo extrae los links por medio de unas expresiones que se le aplica al html ya que hay veces que el codigo varia 
 	function url_bing()
 	{
 
-
-		$this->count1=$this->count1+1;
-		
-
-
 		preg_match_all('#<h2><a href="(.*?)"#', $this->codigo, $findlink); // Busqueda de link por default
 
-		
-		if(empty($findlink[1][0])){
+		if(empty($findlink[1][0]))
+		{
 
-			//echo "ESTA VACIO EL 1\n";
 			preg_match_all('#<h2><a target="_blank" href="(.*?)" h="ID=#', $this->codigo, $findlink); // al cambiar de ip ciudad cambia el html	
 			
 
-			if(empty($findlink[1][0])){
+			if(empty($findlink[1][0]))
+			{
 
 
-				//echo "ESTA VACIO EL 2\n";
 				preg_match_all('#<h2><a target="_blank" target="_blank" href="(.*?)" h="ID=#', $this->codigo, $findlink);				
 				
-				if(empty($findlink[1][0])){
 
+				if(empty($findlink[1][0]))
+				{
 					return $findlink[1];
 					//die("NO SE ENCONTRARON URL CON ESTAS EXPRESIONES");
-				}else{return $findlink[1];}
+				}
+				else
+
+				{
+					if(!empty($this->paginasComunes)) // elimina los dominios que no queremos
+						return preg_grep("#".substr($this->paginasComunes,1)."#i",$findlink[1],PREG_GREP_INVERT);
+					
+
+					return $findlink[1];
+				}
 
 
+			}
+			else
+			{
+				if(!empty($this->paginasComunes))
+					return preg_grep("#".substr($this->paginasComunes,1)."#i",$findlink[1],PREG_GREP_INVERT);
+				
 
-			}else{return $findlink[1];}
+				return $findlink[1];
+			}
 
 
-		}else{
+		}
+		else
+		{
+
+			if(!empty($this->paginasComunes))
+				return preg_grep("#".substr($this->paginasComunes,1)."#i",$findlink[1],PREG_GREP_INVERT);
 
 			return $findlink[1];
-			print_r($findlink[1][0]);
+			//print_r($findlink[1][0]);
 		}
 
 
@@ -182,17 +230,10 @@ class bing extends facilcurl
 	}
 
 
-
-
+	// Borrando variables
 	function __destruct()
 	{
 		unset($this->codigo);
-		unset($pagina);
-		unset($resultado);
-		unset($findlink);
-		unset($link);
-		unset($link2);
-
 	}
 
 
@@ -201,20 +242,68 @@ class bing extends facilcurl
 }
 
 
-/*
+
+
+
 
 $mm = new bing();
-$pag= $mm->dork_bing("jose",500);  //  dork_bing($url,$cantidad=49,$exprecion=null,$fecha="")
+
+//$mm->proxyBing("127.0.0.1:8080");
+
+ $mm->eliminarDominio("google.com");
+ $mm->eliminarDominio("www.google");
+ $mm->eliminarDominio("youtube.com");
+ $mm->eliminarDominio("wikipedia.org");
+ $mm->eliminarDominio("facebook.org");
+ $mm->eliminarDominio("facebook.com");
+ $mm->eliminarDominio("fb.com");
+ $mm->eliminarDominio("wikipedia.org");
+ $mm->eliminarDominio("twitch.org");
+ $mm->eliminarDominio("twitter.com");
+ $mm->eliminarDominio("twitter.org");
+ $mm->eliminarDominio("tiktok.com");
+ $mm->eliminarDominio("instagram.com");
+ $mm->eliminarDominio("netflix.com");
+ $mm->eliminarDominio("wiktionary.org");
+
+$mm->eliminarDominio("yahoo.com");
+
+//$pag= $mm->dork_bing("jose",49,"mx");  
+$pag= $mm->dork_bing("jose",1000);  
+
 
 if($pag)
 {
-	print_r($pag[1]);
+	print_r($pag[0]);
 }
 else
 {
 	echo "no se pudo\n";
 }
 
+
+
+
+/*
+
+
+lento 
+elimina link repetidos
+elimina dominios comunes que no quieres que parescan
+puedes usar proxy
+Se puedes especificar la fecha de lanzamiento del los link que queremos 
+tambien se puede usar expresiones regulares para cada link
+
+mas preciso con las busqueda ya que realiza una consulta y elimina los dominios no requeridos, despues elimina links repetidos, despues obtiene la cantidad de link,
+ y se detiene la busqueda de links hasta que la cantidad de link que especificamos sea igual o mayor o que se hayan acabado los links
+
+
+
+
+
+
 */
+
+
 
 ?>
