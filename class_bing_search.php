@@ -178,15 +178,11 @@ class bing extends facilcurl
 		{
 
 			preg_match_all('#<h2><a target="_blank" href="(.*?)" h="ID=#', $this->codigo, $findlink); // al cambiar de ip ciudad cambia el html	
-			
-
 			if(empty($findlink[1][0]))
 			{
 
 
 				preg_match_all('#<h2><a target="_blank" target="_blank" href="(.*?)" h="ID=#', $this->codigo, $findlink);				
-				
-
 				if(empty($findlink[1][0]))
 				{
 					return $findlink[1];

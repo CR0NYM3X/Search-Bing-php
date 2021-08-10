@@ -58,7 +58,9 @@ function getSM($id)
 
 
 	} else {
-	            die("\n... La memoria no existe  habilitar la opcion [ -fk ]\n");
+
+          return ["Error: El identificador [ ".$id." ] que se uso para el segmento de memoria no existe"];
+	         //die("\n... La memoria no existe  habilitar la opcion [ -fk ]\n");
 	}
 
 }

@@ -183,11 +183,14 @@ function consultBing($url,$cnt1,$idproces)
 
 	
 
-	$mm->curl($url);
+	$mm->curl($url,null,0,null,1);
 
 	// VERIFICA SI SE HIZO LA CONSULTA A LA PAGINA
 	if ($pag = $mm->exe_curl()) 
 	{
+
+
+
 
 		# IF DONDE EXTRAE LOS LINK CON RESPECTIVOS FILTROS
 		preg_match_all('#<h2><a href="(.*?)"#', $pag , $findlink);
@@ -203,6 +206,7 @@ function consultBing($url,$cnt1,$idproces)
 					if( empty($findlink[1]) )
 					{
 						echo $cnt1."---\t".$url.$txtcl->txtcolor("\t- Esta vacio \n",1,"rojo","negro");
+
 					}
 					else
 					{
@@ -358,6 +362,7 @@ foreach ($pids as  $idvalue) {
  	$linksMemoryShare = array_merge($linksMemoryShare , getSM($idvalue)); 	
 }
 
+
 $linksMemoryShare= array_unique($linksMemoryShare,SORT_STRING); // elimina link repetidos
 
 
@@ -373,6 +378,7 @@ if(!empty($expLinks)){
 	{
 		echo $txtcl->txtcolor("\n\tSE ENCONTRARON ".count($linksMemoryShare)." CON LA EXPRESION: ".$expLinks."\n",1,"verde1","negro");
 		guardadData($linksMemoryShare,"a",$rutaDatalink);
+
 
 		if($linksMemoryShareInvert){
 			echo $txtcl->txtcolor("\tSE ENCONTRARON ".count($linksMemoryShareInvert)." SIN LA EXPRESION, SE GUARDARON : Data_bing/Data_not_Filter.txt \n",1,"verde1","negro");
