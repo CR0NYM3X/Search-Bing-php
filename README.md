@@ -1,5 +1,5 @@
 # Search Bing
-Ejemplo  de ejecucion :    `  php searchbing.php -w gobierno -mnt 200  -d * -outf info.txt -exp "\.com|\.mx" -cl -fk`<br><br>
+Ejemplo de uso :    ` php searchbing.php -w gobierno -mnt 200 -d * -outf info.txt -exp "\.com|\.mx" -cl -fk -proxy 127.0.0.1:8080`<br><br>
        ********** PARAMETRO OPCIONAL, LO PUEDES PONER O NO `[ -d ]`<br>
         * = SE EXTRAERAN TODOS LINK ENCONTRADOS SIN FLITRO DE FECHA <br>
 				1 = SE EXTRAERAN LOS LINK QUE TENGAN UN TIEMPO DE 24 HORAS <br>
@@ -7,6 +7,7 @@ Ejemplo  de ejecucion :    `  php searchbing.php -w gobierno -mnt 200  -d * -out
 				3 = SE EXTRAERAN LOS LINK QUE TENGAN UN TIEMPO DE MESES<br>
 
 ![logo](img/banner1.PNG)
+![logo](img/con_proxy.PNG)
 ![test](img/procesos.png)
 
 ## Ventajas
