@@ -16,7 +16,7 @@ Ejemplo de uso :    ` php searchbing.php -w gobierno -mnt 200 -d * -outf info.tx
 3.- Puedes filtrar los link con expresiones regulares<br>
 4.- Almacena los resultados en TXT<br>
 5.- Puedes hacer busquedas con fecha y extraer los links mas recientes<br>
-6.- Futura actualizacion el uso de proxy
+6.- Puedes usar proxy (Se recomienda un buen proxy porque las consultas se realizan demasioado rapidas)
 
 ### Funciones y clases que utilizia
 
