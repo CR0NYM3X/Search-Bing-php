@@ -120,7 +120,7 @@ else
 ( 2 ) Elimina link repetidos<br>
 ( 3 ) Elimina dominios comunes que no quieres que parescan<br>
 ( 4 ) Puedes usar proxy<br>
-( 5 ) Ee puedes especificar la fecha de lanzamiento del los link que queremos <br>
+( 5 ) Se puedes especificar la fecha de lanzamiento del los link que queremos <br>
 ( 6 ) Tambien se pueden usar expresiones regulares para cada link<br>
 
 
